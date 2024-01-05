@@ -3,7 +3,12 @@ import auth from "../config/firebase.config";
 import PropTypes from "prop-types";
 import {
 	createUserWithEmailAndPassword,
-	onAuthStateChanged, signInWithEmailAndPassword, signOut
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	GoogleAuthProvider,
+	signInWithPopup,
+	signOut,
+	FacebookAuthProvider,
 } from "firebase/auth";
 
 export const AuthContext = createContext({});
@@ -25,19 +30,28 @@ export default function AuthProvider({ children }) {
 		return () => unsubscribe();
 	}, [])
 	
+	// Email and password providers
 	const loginUser = (email, password) => {
 		setLoading(false);
 		return signInWithEmailAndPassword(auth, email, password)
 	}
-	
 	const registerUser = (email, password) => {
 		setLoading(false);
 		return createUserWithEmailAndPassword(auth, email, password)
 	}
-	
 	const logoutUser = () => {
 		setLoading(false);
 		return signOut(auth)
+	}
+	
+	// 3rd party providers
+	const googleLogin = () => {
+		const provider = new GoogleAuthProvider(); 
+		return signInWithPopup(auth, provider);
+	}
+	const facebookLogin = () => {
+		const provider = new FacebookAuthProvider()
+		return signInWithPopup(auth, provider);
 	}
 	
 	const authInfo = {
@@ -47,6 +61,8 @@ export default function AuthProvider({ children }) {
 		loginUser,
 		registerUser,
 		logoutUser,
+		googleLogin,
+		facebookLogin,
 	}
 	
 	return <AuthContext.Provider value={ authInfo }>
