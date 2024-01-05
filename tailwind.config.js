@@ -7,7 +7,12 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-			}
+			},
+			fontFamily: {
+				"playfair": ["Playfair Display", "serif"],
+				"lato": ["Lato", "sans-serif"],
+				"dancing": ["Dancing Script", "cursive"],
+			},
 		},
 	},
 	
